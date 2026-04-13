@@ -1,0 +1,46 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Vendor {
+  id        String   @id @default(cuid())
+  name      String   @unique
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  workers   Worker[]
+}
+
+model Worker {
+  id        String        @id @default(cuid())
+  name      String
+  ops       String        @unique
+  shift     String
+  vendorId  String
+  vendor    Vendor        @relation(fields: [vendorId], references: [id])
+  createdAt DateTime      @default(now())
+  updatedAt DateTime      @updatedAt
+  scanLogs  ScanLog[]
+  activeBreak ActiveBreak?
+}
+
+model ScanLog {
+  id             String   @id @default(cuid())
+  type           String   // 'check-in' or 'check-out'
+  time           DateTime @default(now())
+  duration       Int?     // Duration in minutes (only on check-in)
+  overdueMinutes Int?     // (only on check-in)
+  workerId       String
+  worker         Worker   @relation(fields: [workerId], references: [id])
+}
+
+model ActiveBreak {
+  id           String   @id @default(cuid())
+  checkOutTime DateTime @default(now())
+  workerId     String   @unique
+  worker       Worker   @relation(fields: [workerId], references: [id])
+}

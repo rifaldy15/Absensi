@@ -1,0 +1,226 @@
+/* Import Button */
+.importBtn {
+  padding: 9px 18px;
+  border-radius: var(--radius-md);
+  background: var(--accent);
+  color: white;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  white-space: nowrap;
+}
+
+.importBtn:hover {
+  background: var(--accent-hover);
+  transform: translateY(-1px);
+}
+
+/* Import Error Banner */
+.importError {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 18px;
+  margin: 0 16px 12px;
+  background: var(--danger-bg);
+  color: var(--danger);
+  border-radius: var(--radius-md);
+  font-size: 0.85rem;
+  font-weight: 600;
+  animation: slideDown 0.3s ease;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.dismissBtn {
+  margin-left: auto;
+  background: none;
+  border: none;
+  color: var(--danger);
+  cursor: pointer;
+  font-size: 1rem;
+}
+
+/* Import Modal — wider */
+.importModal {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-xl);
+  width: 100%;
+  max-width: 700px;
+  max-height: 85vh;
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+  animation: scaleUp 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+@keyframes scaleUp {
+  from {
+    opacity: 0;
+    transform: scale(0.92);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.fileInfo {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 24px;
+  background: rgba(0, 0, 0, 0.15);
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+}
+
+.fileCount {
+  font-weight: 700;
+  color: var(--primary);
+}
+
+/* Vendor summary chips */
+.vendorSummary {
+  display: flex;
+  gap: 8px;
+  padding: 12px 24px;
+  flex-wrap: wrap;
+}
+
+.vendorChip {
+  padding: 6px 14px;
+  border-radius: var(--radius-full);
+  background: var(--bg-main);
+  border: 1px solid var(--border);
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+}
+
+.vendorChip strong {
+  color: var(--primary);
+}
+
+/* Preview Table */
+.importPreview {
+  flex: 1;
+  overflow-y: auto;
+  max-height: 350px;
+  border-top: 1px solid var(--border-light);
+  border-bottom: 1px solid var(--border-light);
+}
+
+.moreRows {
+  text-align: center;
+  padding: 12px;
+  color: var(--text-muted);
+  font-size: 0.82rem;
+  font-style: italic;
+}
+
+/* Import Actions */
+.importActions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  padding: 16px 24px;
+}
+
+.confirmBtn {
+  padding: 10px 24px;
+  border-radius: var(--radius-md);
+  background: linear-gradient(135deg, var(--success), #059669);
+  color: white;
+  font-size: 0.9rem;
+  font-weight: 700;
+  border: none;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  box-shadow: 0 4px 16px rgba(16, 185, 129, 0.3);
+}
+
+.confirmBtn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 24px rgba(16, 185, 129, 0.4);
+}
+
+/* Template bar */
+.templateBar {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 20px;
+  border-top: 1px solid var(--border-light);
+}
+
+.templateBtn {
+  padding: 7px 16px;
+  border-radius: var(--radius-md);
+  background: var(--bg-input);
+  color: var(--text-secondary);
+  font-size: 0.8rem;
+  font-weight: 600;
+  border: 1px solid var(--border);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.templateBtn:hover {
+  background: var(--bg-card-hover);
+  color: var(--text-primary);
+}
+
+.templateHint {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+}
+
+/* Toast */
+.toast {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  padding: 12px 24px;
+  border-radius: var(--radius-md);
+  background: var(--success);
+  color: white;
+  font-weight: 600;
+  font-size: 0.85rem;
+  z-index: 600;
+  animation:
+    slideUp 0.3s ease,
+    fadeOut 0.3s ease 2.5s forwards;
+  box-shadow: var(--shadow-lg);
+}
+
+@keyframes slideUp {
+  from {
+    transform: translateY(20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes fadeOut {
+  to {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+}

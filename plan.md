@@ -40,7 +40,7 @@ Navigasi menggunakan **sidebar kiri** yang _collapsible_ dan **top bar** untuk i
 | --- | ---------------- | ---- | ------------------------------------------------------------------- | ----- |
 | 1   | **Dashboard**    | 🏠   | Overview real-time: siapa yang sedang istirahat, statistik hari ini | Semua |
 | 2   | **Scan Station** | 📷   | Halaman utama scanning — tampilan layar besar untuk meja admin      | Admin |
-| 3   | **Data Pekerja** | 👥   | CRUD data pekerja (Nama, Barcode ID, Ops Unit, Vendor, Foto)        | Admin |
+| 3   | **Data Pekerja** | 👥   | CRUD data pekerja (Nama, Barcode ID, Ops, Vendor, Foto)             | Admin |
 | 4   | **Data Vendor**  | 🏢   | CRUD data vendor (Nama Vendor, PIC)                                 | Admin |
 | 5   | **Laporan**      | 📊   | Rekap harian, laporan keterlambatan, export Excel                   | Semua |
 | 6   | **Pengaturan**   | ⚙️   | Konfigurasi durasi istirahat, koneksi scanner, manajemen user       | Admin |
@@ -66,7 +66,7 @@ Halaman pertama setelah login. Menampilkan ringkasan kondisi istirahat secara **
 
 **Kolom Kiri — Tabel Live "Sedang Istirahat"**
 
-- Kolom: No, Foto (thumbnail), Nama, Ops Unit, Vendor, Jam Keluar, **Durasi** (countdown timer), Status.
+- Kolom: No, Foto (thumbnail), Nama, Ops, Vendor, Jam Keluar, **Durasi** (countdown timer), Status.
 - Baris berwarna **merah** jika durasi > 60 menit (overdue).
 - Baris berwarna **kuning** jika durasi > 50 menit (peringatan).
 - Auto-refresh setiap 10 detik tanpa reload halaman.
@@ -74,7 +74,7 @@ Halaman pertama setelah login. Menampilkan ringkasan kondisi istirahat secara **
 **Kolom Kanan — Panel Informasi**
 
 - **Donut Chart:** Distribusi pekerja istirahat per Vendor.
-- **Bar Chart:** Jumlah istirahat per Ops Unit hari ini.
+- **Bar Chart:** Jumlah istirahat per Ops hari ini.
 - **Activity Feed:** Log 10 scan terakhir (Check-Out / Check-In) secara real-time.
 
 ---
@@ -90,7 +90,7 @@ Halaman khusus untuk **meja admin** yang terhubung dengan scanner. Dirancang unt
 - **Idle State:** Logo perusahaan + teks "Silakan Scan ID Card Anda" dengan animasi pulse.
 - **Setelah Scan (Check-Out):**
   - Foto pekerja (besar, bulat, dengan border hijau).
-  - Nama, Ops Unit, Vendor.
+  - Nama, Ops, Vendor.
   - Status: `🟢 CHECK-OUT — Istirahat Dimulai`
   - **Countdown Timer besar:** `60:00` yang mulai menghitung mundur.
   - Animasi transisi _slide-in_ yang smooth.
@@ -121,13 +121,13 @@ Halaman CRUD untuk mengelola database pekerja.
 
 #### Layout
 
-- **Top Bar:** Tombol `+ Tambah Pekerja`, Search bar, Filter (Ops Unit, Vendor).
+- **Top Bar:** Tombol `+ Tambah Pekerja`, Search bar, Filter (Ops , Vendor).
 - **Tabel Data:**
-  - Kolom: No, Foto, ID Barcode, Nama, Ops Unit, Vendor, Aksi (Edit / Hapus).
+  - Kolom: No, Foto, ID Barcode, Nama, Ops, Vendor, Aksi (Edit / Hapus).
   - Pagination (25 per halaman).
   - Sorting per kolom.
 - **Modal Form (Tambah/Edit):**
-  - Field: ID Barcode (bisa di-scan langsung), Nama Lengkap, Pilih Ops Unit (dropdown), Pilih Vendor (dropdown), Upload Foto.
+  - Field: ID Barcode (bisa di-scan langsung), Nama Lengkap, Pilih Ops (dropdown), Pilih Vendor (dropdown), Upload Foto.
   - Validasi real-time: ID Barcode harus unik.
 - **Import Massal:**
   - Tombol `Import dari Excel` untuk onboarding banyak pekerja sekaligus.
@@ -164,7 +164,7 @@ Halaman untuk melihat rekap dan mengunduh laporan.
 
 - **Filter Bar (setiap tab):**
   - Date Picker (rentang tanggal).
-  - Dropdown: Ops Unit, Vendor.
+  - Dropdown: Ops, Vendor.
   - Tombol: `🔍 Tampilkan` dan `📥 Export Excel`.
 - **Tabel Hasil:**
   - Kolom dinamis sesuai tab.

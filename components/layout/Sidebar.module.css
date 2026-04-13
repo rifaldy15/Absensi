@@ -1,0 +1,195 @@
+.sidebar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: var(--sidebar-width);
+  height: 100vh;
+  background: var(--bg-sidebar);
+  border-right: 1px solid var(--border-light);
+  display: flex;
+  flex-direction: column;
+  z-index: 100;
+  transition: width var(--transition-slow);
+  overflow: hidden;
+}
+
+.sidebar.collapsed {
+  width: var(--sidebar-collapsed);
+}
+
+/* Logo Area */
+.logoArea {
+  padding: 20px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  border-bottom: 1px solid var(--border-light);
+  min-height: var(--topbar-height);
+}
+
+.logoIcon {
+  width: 36px;
+  height: 36px;
+  border-radius: var(--radius-md);
+  background: linear-gradient(135deg, var(--primary), var(--accent));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.1rem;
+  flex-shrink: 0;
+}
+
+.logoText {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  white-space: nowrap;
+  opacity: 1;
+  transition: opacity var(--transition-normal);
+}
+
+.sidebar.collapsed .logoText {
+  opacity: 0;
+  width: 0;
+}
+
+.logoTitle {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  letter-spacing: -0.02em;
+}
+
+.logoSubtitle {
+  font-size: 0.7rem;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+/* Navigation */
+.nav {
+  flex: 1;
+  padding: 12px 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  overflow-y: auto;
+}
+
+.navGroup {
+  margin-bottom: 16px;
+}
+
+.navGroupLabel {
+  font-size: 0.65rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--text-muted);
+  padding: 8px 12px 6px;
+  overflow: hidden;
+  white-space: nowrap;
+  opacity: 1;
+  transition: opacity var(--transition-normal);
+}
+
+.sidebar.collapsed .navGroupLabel {
+  opacity: 0;
+}
+
+.navItem {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 14px;
+  border-radius: var(--radius-md);
+  color: var(--text-secondary);
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  white-space: nowrap;
+  position: relative;
+}
+
+.navItem:hover {
+  background: rgba(255, 255, 255, 0.05);
+  color: var(--text-primary);
+}
+
+.navItem.active {
+  background: rgba(59, 130, 246, 0.15);
+  color: var(--primary);
+}
+
+.navItem.active::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 3px;
+  height: 60%;
+  background: var(--primary);
+  border-radius: 0 4px 4px 0;
+}
+
+.navIcon {
+  width: 20px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  font-size: 1.1rem;
+}
+
+.navLabel {
+  overflow: hidden;
+  opacity: 1;
+  transition: opacity var(--transition-normal);
+}
+
+.sidebar.collapsed .navLabel {
+  opacity: 0;
+  width: 0;
+}
+
+/* Collapse Toggle */
+.collapseBtn {
+  padding: 16px;
+  border-top: 1px solid var(--border-light);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  color: var(--text-muted);
+  font-size: 0.8rem;
+  cursor: pointer;
+  transition: color var(--transition-fast);
+}
+
+.collapseBtn:hover {
+  color: var(--text-primary);
+}
+
+.collapseIcon {
+  transition: transform var(--transition-normal);
+  font-size: 1rem;
+}
+
+.sidebar.collapsed .collapseIcon {
+  transform: rotate(180deg);
+}
+
+.collapseLabel {
+  overflow: hidden;
+  white-space: nowrap;
+  opacity: 1;
+  transition: opacity var(--transition-normal);
+}
+
+.sidebar.collapsed .collapseLabel {
+  opacity: 0;
+  width: 0;
+}
