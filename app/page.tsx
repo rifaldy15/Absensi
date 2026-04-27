@@ -8,8 +8,7 @@ import ActivityFeed from "@/components/dashboard/ActivityFeed";
 import AlertBanner from "@/components/dashboard/AlertBanner";
 import { VendorDonutChart } from "@/components/dashboard/Charts";
 import {
-  SHIFTS,
-  getActiveShifts,
+  isShiftActive,
   isShiftExpired,
   type Shift,
 } from "@/lib/mock-data";
