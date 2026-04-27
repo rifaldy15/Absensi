@@ -49,6 +49,7 @@ model ActiveBreak {
 model Setting {
   id            String   @id @default("global")
   graceMinutes  Int      @default(30)
+  breakMinutes  Int      @default(60)
   activeShifts  String   @default("08:00,09:00,15:00,19:00,23:00,00:00")
   updatedAt     DateTime @updatedAt
 }

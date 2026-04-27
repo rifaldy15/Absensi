@@ -12,6 +12,7 @@ export async function GET() {
         data: {
           id: "global",
           graceMinutes: 30,
+          breakMinutes: 60,
           activeShifts: "08:00,09:00,15:00,19:00,23:00,00:00",
         },
       });
@@ -30,11 +31,13 @@ export async function PUT(request: Request) {
       where: { id: "global" },
       update: {
         graceMinutes: body.graceMinutes,
+        breakMinutes: body.breakMinutes,
         activeShifts: body.activeShifts,
       },
       create: {
         id: "global",
         graceMinutes: body.graceMinutes || 30,
+        breakMinutes: body.breakMinutes || 60,
         activeShifts: body.activeShifts || "08:00,09:00,15:00,19:00,23:00,00:00",
       },
     });

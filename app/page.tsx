@@ -154,17 +154,17 @@ export default function DashboardPage() {
         const elapsed = Math.floor(
           (Date.now() - w.checkOutTime.getTime()) / 60000,
         );
-        if (elapsed < 60) return null;
+        if (elapsed < breakMinutes) return null;
         return {
           id: w.id,
           name: w.name,
           ops: w.ops,
           vendor: w.vendor,
-          minutesOver: elapsed - 60,
+          minutesOver: elapsed - breakMinutes,
         };
       })
       .filter((w) => w !== null);
-  }, [visibleWorkers]);
+  }, [visibleWorkers, breakMinutes]);
 
 
 
@@ -184,7 +184,7 @@ export default function DashboardPage() {
     {
       icon: "🔴",
       value: overdueWorkers.length,
-      label: "Overdue (> 60 min)",
+      label: `Overdue (> ${breakMinutes} min)`,
       colorClass: "iconRed",
     },
     {

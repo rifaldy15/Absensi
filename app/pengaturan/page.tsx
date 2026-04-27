@@ -7,6 +7,7 @@ import { Shift } from "@/lib/mock-data";
 export default function PengaturanPage() {
   const [loading, setLoading] = useState(true);
   const [graceMinutes, setGraceMinutes] = useState(30);
+  const [breakMinutes, setBreakMinutes] = useState(60);
   const [activeShifts, setActiveShifts] = useState<string[]>([]);
   const [newShift, setNewShift] = useState("");
   
@@ -30,6 +31,7 @@ export default function PengaturanPage() {
       const data = await res.json();
       if (data && !data.error) {
         setGraceMinutes(data.graceMinutes);
+        setBreakMinutes(data.breakMinutes || 60);
         setActiveShifts(data.activeShifts.split(",").map((s: string) => s.trim()));
       }
     } catch (error) {
@@ -55,6 +57,7 @@ export default function PengaturanPage() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           graceMinutes,
+          breakMinutes,
           activeShifts: activeShifts.join(","),
         }),
       });
@@ -112,6 +115,23 @@ export default function PengaturanPage() {
                 className={styles.input}
                 value={companyName}
                 onChange={(e) => setCompanyName(e.target.value)}
+              />
+            </div>
+
+            <div className={styles.field}>
+              <label className={styles.label}>
+                Durasi Istirahat Default (Menit)
+              </label>
+              <p className={styles.description}>
+                Batas waktu istirahat sebelum pekerja dianggap terlambat (muncul alert merah)
+              </p>
+              <input
+                className={styles.input}
+                type="number"
+                min="1"
+                max="120"
+                value={breakMinutes}
+                onChange={(e) => setBreakMinutes(parseInt(e.target.value) || 1)}
               />
             </div>
             
