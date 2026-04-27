@@ -53,18 +53,7 @@ const activeBadgeStyle: React.CSSProperties = {
   marginLeft: "4px",
   boxShadow: "0 0 4px var(--success)",
 };
-const expiredBannerStyle: React.CSSProperties = {
-  padding: "10px 16px",
-  marginBottom: "16px",
-  borderRadius: "10px",
-  background: "rgba(245, 158, 11, 0.08)",
-  border: "1px solid rgba(245, 158, 11, 0.2)",
-  fontSize: "0.82rem",
-  color: "var(--text-secondary)",
-  display: "flex",
-  alignItems: "center",
-  gap: "8px",
-};
+
 
 export default function DashboardPage() {
   const [shiftFilter, setShiftFilter] = useState<string>("all");
@@ -139,11 +128,9 @@ export default function DashboardPage() {
 
   const activeShifts = getActiveShifts();
 
-  // Filter workers: remove those whose shift has EXPIRED (>30 min after shift end)
+  // Filter workers based on shift
   const visibleWorkers = useMemo(() => {
     return activeBreaks.filter((w) => {
-      // Remove workers whose shift has expired
-      if (isShiftExpired(w.shift as Shift)) return false;
       // Apply shift filter
       if (shiftFilter !== "all" && w.shift !== shiftFilter) return false;
       return true;
@@ -168,11 +155,7 @@ export default function DashboardPage() {
       .filter((w) => w !== null);
   }, [visibleWorkers]);
 
-  // Count expired shifts for info
-  const expiredShifts = SHIFTS.filter((s) => isShiftExpired(s));
-  const workersCleared = activeBreaks.filter((w) =>
-    isShiftExpired(w.shift as Shift),
-  ).length;
+
 
   const statCards = [
     {
@@ -240,13 +223,6 @@ export default function DashboardPage() {
         })}
       </div>
 
-      {/* Expired shift notice */}
-      {workersCleared > 0 && (
-        <div style={expiredBannerStyle}>
-          ⏰ <strong>{workersCleared} pekerja</strong> otomatis dihapus dari
-          monitoring (shift {expiredShifts.join(", ")} telah berakhir +30 menit)
-        </div>
-      )}
 
       <StatCards stats={statCards} />
 

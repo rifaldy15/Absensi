@@ -212,3 +212,37 @@
   color: var(--primary);
   border: 1px solid rgba(59, 130, 246, 0.3);
 }
+
+/* ===== Mobile Responsive ===== */
+@media (max-width: 768px) {
+  .banner {
+    padding: 12px 14px;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+
+  .iconWrap {
+    width: 34px;
+    height: 34px;
+    font-size: 1rem;
+  }
+
+  .title {
+    font-size: 0.8rem;
+  }
+
+  .detail {
+    font-size: 0.73rem;
+  }
+
+  .badge {
+    padding: 3px 10px;
+    font-size: 0.68rem;
+  }
+
+  .dismissBtn {
+    width: 24px;
+    height: 24px;
+    font-size: 0.7rem;
+  }
+}

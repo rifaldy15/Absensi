@@ -224,3 +224,51 @@
     transform: translateY(10px);
   }
 }
+
+/* ===== Mobile Responsive ===== */
+@media (max-width: 768px) {
+  .importModal {
+    max-width: calc(100vw - 32px);
+    margin: 16px;
+    max-height: 80vh;
+  }
+
+  .fileInfo {
+    padding: 10px 16px;
+    font-size: 0.8rem;
+  }
+
+  .vendorSummary {
+    padding: 10px 16px;
+    gap: 6px;
+  }
+
+  .vendorChip {
+    padding: 4px 10px;
+    font-size: 0.75rem;
+  }
+
+  .importActions {
+    padding: 12px 16px;
+    flex-direction: column;
+  }
+
+  .confirmBtn {
+    width: 100%;
+    text-align: center;
+    justify-content: center;
+  }
+
+  .templateBar {
+    flex-wrap: wrap;
+    padding: 10px 16px;
+    gap: 8px;
+  }
+
+  .toast {
+    left: 16px;
+    right: 16px;
+    bottom: 16px;
+    text-align: center;
+  }
+}

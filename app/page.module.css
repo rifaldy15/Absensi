@@ -12,12 +12,14 @@
   display: flex;
   flex-direction: column;
   gap: 24px;
+  min-width: 0;
 }
 
 .sideCol {
   display: flex;
   flex-direction: column;
   gap: 24px;
+  min-width: 0;
 }
 
 @keyframes fadeIn {
@@ -32,5 +34,17 @@
 @media (max-width: 1200px) {
   .body {
     grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 768px) {
+  .body {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  .mainCol,
+  .sideCol {
+    gap: 16px;
   }
 }

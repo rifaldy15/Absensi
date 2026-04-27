@@ -1,8 +1,11 @@
 import { NextResponse } from "next/server";
 import prisma from "@/lib/prisma";
+import { autoCleanupExpiredWorkers } from "@/lib/cleanup";
 
 export async function GET() {
   try {
+    await autoCleanupExpiredWorkers();
+    
     const workers = await prisma.worker.findMany({
       include: {
         vendor: true,

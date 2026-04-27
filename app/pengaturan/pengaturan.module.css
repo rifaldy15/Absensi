@@ -328,3 +328,82 @@
   background: rgba(6, 182, 212, 0.15);
   color: var(--accent);
 }
+
+/* ===== Mobile Responsive ===== */
+@media (max-width: 768px) {
+  .page {
+    max-width: 100%;
+  }
+
+  .sectionHeader {
+    padding: 14px 16px;
+  }
+
+  .sectionTitle {
+    font-size: 0.88rem;
+  }
+
+  .sectionBody {
+    padding: 16px;
+    gap: 16px;
+  }
+
+  .fieldRow {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+
+  .input {
+    max-width: 100%;
+    width: 100%;
+  }
+
+  .select {
+    min-width: 0;
+    width: 100%;
+  }
+
+  .toggleRow {
+    gap: 12px;
+  }
+
+  .toggleLabel {
+    font-size: 0.82rem;
+  }
+
+  .toggleDesc {
+    font-size: 0.73rem;
+  }
+
+  .statusRow {
+    padding: 8px 12px;
+    font-size: 0.82rem;
+  }
+
+  .userItem {
+    padding: 8px 12px;
+    gap: 10px;
+  }
+
+  .userAvatar {
+    width: 30px;
+    height: 30px;
+    font-size: 0.7rem;
+  }
+
+  .saveBar {
+    justify-content: stretch;
+  }
+
+  .saveBtn {
+    width: 100%;
+  }
+
+  .toast {
+    left: 16px;
+    right: 16px;
+    bottom: 16px;
+    text-align: center;
+  }
+}

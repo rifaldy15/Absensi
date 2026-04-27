@@ -159,3 +159,47 @@
   font-size: 0.78rem;
   color: var(--text-muted);
 }
+
+/* ===== Mobile Responsive ===== */
+@media (max-width: 768px) {
+  .container {
+    padding: 0 16px;
+  }
+
+  .card {
+    padding: 24px;
+  }
+
+  .logoIcon {
+    width: 56px;
+    height: 56px;
+    font-size: 1.5rem;
+    margin-bottom: 12px;
+  }
+
+  .logoTitle {
+    font-size: 1.4rem;
+  }
+
+  .logoSubtitle {
+    font-size: 0.8rem;
+  }
+
+  .label {
+    font-size: 0.75rem;
+  }
+
+  .input {
+    padding: 10px 14px;
+    font-size: 0.85rem;
+  }
+
+  .rememberRow {
+    font-size: 0.78rem;
+  }
+
+  .submitBtn {
+    padding: 12px;
+    font-size: 0.9rem;
+  }
+}

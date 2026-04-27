@@ -6,7 +6,9 @@ import styles from "./Sidebar.module.css";
 
 interface SidebarProps {
   collapsed: boolean;
+  mobileOpen: boolean;
   onToggle: () => void;
+  onMobileClose: () => void;
 }
 
 const NAV_ITEMS = [
@@ -34,11 +36,13 @@ const NAV_ITEMS = [
   },
 ];
 
-export default function Sidebar({ collapsed, onToggle }: SidebarProps) {
+export default function Sidebar({ collapsed, mobileOpen, onToggle, onMobileClose }: SidebarProps) {
   const pathname = usePathname();
 
   return (
-    <aside className={`${styles.sidebar} ${collapsed ? styles.collapsed : ""}`}>
+    <aside
+      className={`${styles.sidebar} ${collapsed ? styles.collapsed : ""} ${mobileOpen ? styles.mobileOpen : ""}`}
+    >
       {/* Logo */}
       <div className={styles.logoArea}>
         <div className={styles.logoIcon}>⏱️</div>
@@ -46,6 +50,14 @@ export default function Sidebar({ collapsed, onToggle }: SidebarProps) {
           <span className={styles.logoTitle}>Break Monitor</span>
           <span className={styles.logoSubtitle}>Sistem Absensi</span>
         </div>
+        {/* Mobile close button */}
+        <button
+          className={styles.mobileCloseBtn}
+          onClick={onMobileClose}
+          aria-label="Tutup menu"
+        >
+          ✕
+        </button>
       </div>
 
       {/* Navigation */}
@@ -71,7 +83,7 @@ export default function Sidebar({ collapsed, onToggle }: SidebarProps) {
         ))}
       </nav>
 
-      {/* Collapse Toggle */}
+      {/* Collapse Toggle — desktop only */}
       <button className={styles.collapseBtn} onClick={onToggle}>
         <span className={styles.collapseIcon}>◀</span>
         <span className={styles.collapseLabel}>Tutup Menu</span>

@@ -454,7 +454,6 @@
   box-shadow: var(--shadow-glow-danger);
 }
 
-/* Vendor specific */
 .vendorCount {
   display: inline-flex;
   align-items: center;
@@ -465,4 +464,90 @@
   color: var(--primary);
   font-size: 0.8rem;
   font-weight: 600;
+}
+
+/* ===== Mobile Responsive ===== */
+@media (max-width: 768px) {
+  .toolbar {
+    padding: 12px 14px;
+    gap: 8px;
+  }
+
+  .searchWrap {
+    min-width: 100%;
+    order: -1;
+  }
+
+  .filterSelect {
+    min-width: 0;
+    flex: 1;
+  }
+
+  .addBtn {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .table th {
+    padding: 8px 12px;
+    font-size: 0.65rem;
+  }
+
+  .table td {
+    padding: 10px 12px;
+    font-size: 0.8rem;
+  }
+
+  .avatar {
+    width: 28px;
+    height: 28px;
+    font-size: 0.65rem;
+  }
+
+  .actions {
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .actionBtn {
+    padding: 4px 8px;
+    font-size: 0.7rem;
+  }
+
+  .pagination {
+    padding: 10px 14px;
+    flex-direction: column;
+    gap: 8px;
+    align-items: center;
+  }
+
+  .modal {
+    max-width: calc(100vw - 32px);
+    margin: 16px;
+    border-radius: var(--radius-lg);
+  }
+
+  .modalHeader {
+    padding: 16px 18px;
+  }
+
+  .modalBody {
+    padding: 18px;
+    gap: 14px;
+  }
+
+  .modalFooter {
+    padding: 12px 18px;
+  }
+}
+
+@media (max-width: 480px) {
+  .nameCell {
+    gap: 8px;
+  }
+
+  .opsBadge {
+    font-size: 0.72rem;
+    padding: 1px 6px;
+  }
 }

@@ -122,3 +122,43 @@
   color: white;
   min-width: 30px;
 }
+
+/* ===== Mobile Responsive ===== */
+@media (max-width: 768px) {
+  .chartCard {
+    padding: 16px;
+  }
+
+  .chartTitle {
+    font-size: 0.85rem;
+    margin-bottom: 14px;
+  }
+
+  .donutWrap {
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+  }
+
+  .donut {
+    width: 110px;
+    height: 110px;
+  }
+
+  .donutValue {
+    font-size: 1.2rem;
+  }
+
+  .legend {
+    width: 100%;
+  }
+
+  .barLabel {
+    width: 70px;
+    font-size: 0.72rem;
+  }
+
+  .barTrack {
+    height: 20px;
+  }
+}

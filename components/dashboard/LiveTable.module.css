@@ -251,3 +251,44 @@
   color: var(--text-muted);
   font-size: 0.9rem;
 }
+
+/* ===== Mobile Responsive ===== */
+@media (max-width: 768px) {
+  .header {
+    padding: 14px 16px;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .title {
+    font-size: 0.88rem;
+  }
+
+  .table th {
+    padding: 8px 12px;
+    font-size: 0.65rem;
+  }
+
+  .table td {
+    padding: 10px 12px;
+    font-size: 0.8rem;
+  }
+
+  .avatar {
+    width: 28px;
+    height: 28px;
+    font-size: 0.65rem;
+  }
+
+  .workerName {
+    font-size: 0.82rem;
+  }
+
+  .timer {
+    font-size: 0.82rem;
+  }
+
+  .empty {
+    padding: 24px 16px;
+  }
+}

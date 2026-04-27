@@ -67,6 +67,28 @@
   letter-spacing: 0.05em;
 }
 
+/* Mobile close button — hidden on desktop */
+.mobileCloseBtn {
+  display: none;
+  margin-left: auto;
+  width: 32px;
+  height: 32px;
+  border-radius: var(--radius-sm);
+  align-items: center;
+  justify-content: center;
+  font-size: 1rem;
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  background: none;
+  border: none;
+}
+
+.mobileCloseBtn:hover {
+  background: var(--bg-card);
+  color: var(--text-primary);
+}
+
 /* Navigation */
 .nav {
   flex: 1;
@@ -192,4 +214,47 @@
 .sidebar.collapsed .collapseLabel {
   opacity: 0;
   width: 0;
+}
+
+/* ===== Mobile Responsive ===== */
+@media (max-width: 768px) {
+  .sidebar {
+    transform: translateX(-100%);
+    transition: transform var(--transition-slow);
+    width: 280px !important;
+    box-shadow: var(--shadow-lg);
+  }
+
+  .sidebar.mobileOpen {
+    transform: translateX(0);
+  }
+
+  .sidebar.collapsed {
+    width: 280px !important;
+  }
+
+  .sidebar.collapsed .logoText,
+  .sidebar.collapsed .navGroupLabel,
+  .sidebar.collapsed .navLabel,
+  .sidebar.collapsed .collapseLabel {
+    opacity: 1;
+    width: auto;
+  }
+
+  .sidebar.collapsed .collapseIcon {
+    transform: rotate(0deg);
+  }
+
+  .mobileCloseBtn {
+    display: flex;
+  }
+
+  .collapseBtn {
+    display: none;
+  }
+
+  .navItem {
+    padding: 12px 14px;
+    font-size: 0.9rem;
+  }
 }

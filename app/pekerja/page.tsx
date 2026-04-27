@@ -35,7 +35,6 @@ export default function DataPekerjaPage() {
   const [search, setSearch] = useState("");
   const [filterVendor, setFilterVendor] = useState("");
   const [filterShift, setFilterShift] = useState("");
-  const [showExpired, setShowExpired] = useState(false);
   const [page, setPage] = useState(1);
   const [modalMode, setModalMode] = useState<"add" | "edit" | "delete" | null>(
     null,
@@ -92,17 +91,9 @@ export default function DataPekerjaPage() {
     }
   };
 
-  // Count expired workers
-  const expiredCount = useMemo(
-    () => workers.filter((w) => isShiftExpired(w.shift)).length,
-    [workers],
-  );
-
-  // Filtered & paginated — hide expired shift workers by default
+  // Filtered & paginated
   const filtered = useMemo(() => {
     return workers.filter((w) => {
-      // Auto-hide workers whose shift has expired (+30min)
-      if (!showExpired && isShiftExpired(w.shift)) return false;
       const matchSearch =
         !search ||
         w.name.toLowerCase().includes(search.toLowerCase()) ||
@@ -111,7 +102,7 @@ export default function DataPekerjaPage() {
       const matchShift = !filterShift || w.shift === filterShift;
       return matchSearch && matchVendor && matchShift;
     });
-  }, [workers, search, filterVendor, filterShift, showExpired]);
+  }, [workers, search, filterVendor, filterShift]);
 
   const totalPages = Math.ceil(filtered.length / PER_PAGE);
   const paginated = filtered.slice((page - 1) * PER_PAGE, page * PER_PAGE);
@@ -377,39 +368,7 @@ export default function DataPekerjaPage() {
         </button>
       </div>
 
-      {/* Expired shift info */}
-      {expiredCount > 0 && (
-        <div
-          style={{
-            display: "flex",
-            alignItems: "center",
-            gap: "10px",
-            padding: "10px 16px",
-            margin: "0 0 4px",
-            background: "rgba(245, 158, 11, 0.08)",
-            borderRadius: "8px",
-            fontSize: "0.82rem",
-            color: "var(--text-secondary)",
-          }}>
-          ⏰ <strong>{expiredCount} pekerja</strong> tersembunyi (shift sudah
-          berakhir +30 menit)
-          <button
-            onClick={() => setShowExpired(!showExpired)}
-            style={{
-              marginLeft: "auto",
-              padding: "4px 12px",
-              borderRadius: "14px",
-              fontSize: "0.75rem",
-              fontWeight: 600,
-              cursor: "pointer",
-              border: "1px solid var(--border)",
-              background: showExpired ? "var(--primary)" : "var(--bg-input)",
-              color: showExpired ? "white" : "var(--text-secondary)",
-            }}>
-            {showExpired ? "👁️ Sembunyikan" : "👁️ Tampilkan"}
-          </button>
-        </div>
-      )}
+      {/* Expired shift info removed */}
 
       {/* Table */}
       <div className={styles.tableCard}>
@@ -433,9 +392,8 @@ export default function DataPekerjaPage() {
               </tr>
             ) : (
               paginated.map((w) => {
-                const isExp = isShiftExpired(w.shift);
                 return (
-                  <tr key={w.id} style={isExp ? { opacity: 0.5 } : {}}>
+                  <tr key={w.id}>
                     <td>
                       <div className={styles.userCell}>
                         <div className={styles.avatar}>{w.name.charAt(0)}</div>
@@ -453,16 +411,6 @@ export default function DataPekerjaPage() {
                         <span className={styles.shiftBadge}>
                           {w.shift} - {getShiftEndTime(w.shift)}
                         </span>
-                        {isExp && (
-                          <span
-                            style={{
-                              fontSize: "0.7rem",
-                              color: "var(--danger)",
-                              fontWeight: 600,
-                            }}>
-                            (Expired)
-                          </span>
-                        )}
                       </div>
                     </td>
                     <td className={styles.actionCol}>
@@ -493,9 +441,6 @@ export default function DataPekerjaPage() {
         <div className={styles.pagination}>
           <span className={styles.pageInfo}>
             Menampilkan {paginated.length} dari {filtered.length} pekerja
-            {!showExpired &&
-              expiredCount > 0 &&
-              ` (menyembunyikan ${expiredCount})`}
           </span>
           <div className={styles.pageControls}>
             <button

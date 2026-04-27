@@ -529,4 +529,62 @@
   .logPanel {
     display: none;
   }
+
+  .feedbackPanel {
+    padding: 24px 20px;
+  }
+
+  .idleIcon {
+    font-size: 3.5rem;
+    margin-bottom: 16px;
+  }
+
+  .idleTitle {
+    font-size: 1.4rem;
+  }
+
+  .idleSubtitle {
+    font-size: 0.9rem;
+  }
+
+  .manualTitle {
+    font-size: 1.3rem;
+  }
+
+  .manualInputState {
+    max-width: 100%;
+    padding: 0 8px;
+  }
+
+  .manualInputWrap {
+    flex-direction: column;
+  }
+
+  .scannedAvatar {
+    width: 90px;
+    height: 90px;
+    font-size: 2.2rem;
+  }
+
+  .scannedName {
+    font-size: 1.5rem;
+  }
+
+  .countdown {
+    font-size: 2.8rem;
+  }
+
+  .durationDisplay {
+    font-size: 2.2rem;
+  }
+
+  .statusBadge {
+    padding: 8px 18px;
+    font-size: 0.88rem;
+  }
+
+  .manualTriggerBtn {
+    padding: 10px 22px;
+    font-size: 0.85rem;
+  }
 }

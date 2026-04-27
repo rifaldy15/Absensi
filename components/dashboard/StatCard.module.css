@@ -136,5 +136,26 @@
 @media (max-width: 600px) {
   .grid {
     grid-template-columns: 1fr;
+    gap: 12px;
+    margin-bottom: 20px;
+  }
+
+  .card {
+    padding: 16px;
+    gap: 12px;
+  }
+
+  .iconWrap {
+    width: 42px;
+    height: 42px;
+    font-size: 1.1rem;
+  }
+
+  .value {
+    font-size: 1.5rem;
+  }
+
+  .label {
+    font-size: 0.75rem;
   }
 }
