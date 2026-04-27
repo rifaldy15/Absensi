@@ -382,70 +382,72 @@ export default function DataPekerjaPage() {
 
       {/* Table */}
       <div className={styles.tableCard}>
-        <table className={styles.table}>
-          <thead>
-            <tr>
-              <th>Pekerja</th>
-              <th>OPS ID</th>
-              <th>Vendor</th>
-              <th>Shift</th>
-              <th className={styles.actionCol}>Status</th>
-              <th className={styles.actionCol}>Aksi</th>
-            </tr>
-          </thead>
-          <tbody>
-            {paginated.length === 0 ? (
+        <div className={styles.tableWrap}>
+          <table className={styles.table}>
+            <thead>
               <tr>
-                <td colSpan={6} className={styles.emptyState}>
-                  Tidak ada data pekerja ditemukan
-                </td>
+                <th>Pekerja</th>
+                <th>OPS ID</th>
+                <th>Vendor</th>
+                <th>Shift</th>
+                <th className={styles.actionCol}>Status</th>
+                <th className={styles.actionCol}>Aksi</th>
               </tr>
-            ) : (
-              paginated.map((w) => {
-                return (
-                  <tr key={w.id}>
-                    <td>
-                      <div className={styles.userCell}>
-                        <div className={styles.avatar}>{w.name.charAt(0)}</div>
-                        <div className={styles.nameWrap}>
-                          <div className={styles.userName}>{w.name}</div>
+            </thead>
+            <tbody>
+              {paginated.length === 0 ? (
+                <tr>
+                  <td colSpan={6} className={styles.emptyState}>
+                    Tidak ada data pekerja ditemukan
+                  </td>
+                </tr>
+              ) : (
+                paginated.map((w) => {
+                  return (
+                    <tr key={w.id}>
+                      <td>
+                        <div className={styles.userCell}>
+                          <div className={styles.avatar}>{w.name.charAt(0)}</div>
+                          <div className={styles.nameWrap}>
+                            <div className={styles.userName}>{w.name}</div>
+                          </div>
                         </div>
-                      </div>
-                    </td>
-                    <td>
-                      <span className={styles.opsBadge}>{w.ops}</span>
-                    </td>
-                    <td>{w.vendor}</td>
-                    <td>
-                      <div className={styles.shiftCol}>
-                        <span className={styles.shiftBadge}>
-                          {w.shift} - {getShiftEndTime(w.shift)}
-                        </span>
-                      </div>
-                    </td>
-                    <td className={styles.actionCol}>
-                      <span className={styles.statusActive}>Aktif</span>
-                    </td>
-                    <td className={styles.actionCol}>
-                      <button
-                        className={styles.iconBtn}
-                        title="Edit"
-                        onClick={() => openEdit(w)}>
-                        ✎
-                      </button>
-                      <button
-                        className={`${styles.iconBtn} ${styles.iconDanger}`}
-                        title="Hapus"
-                        onClick={() => openDelete(w)}>
-                        🗑
-                      </button>
-                    </td>
-                  </tr>
-                );
-              })
-            )}
-          </tbody>
-        </table>
+                      </td>
+                      <td>
+                        <span className={styles.opsBadge}>{w.ops}</span>
+                      </td>
+                      <td>{w.vendor}</td>
+                      <td>
+                        <div className={styles.shiftCol}>
+                          <span className={styles.shiftBadge}>
+                            {w.shift} - {getShiftEndTime(w.shift as Shift)}
+                          </span>
+                        </div>
+                      </td>
+                      <td className={styles.actionCol}>
+                        <span className={styles.statusActive}>Aktif</span>
+                      </td>
+                      <td className={styles.actionCol}>
+                        <button
+                          className={styles.iconBtn}
+                          title="Edit"
+                          onClick={() => openEdit(w)}>
+                          ✎
+                        </button>
+                        <button
+                          className={`${styles.iconBtn} ${styles.iconDanger}`}
+                          title="Hapus"
+                          onClick={() => openDelete(w)}>
+                          🗑
+                        </button>
+                      </td>
+                    </tr>
+                  );
+                })
+              )}
+            </tbody>
+          </table>
+        </div>
 
         {/* Pagination Info */}
         <div className={styles.pagination}>

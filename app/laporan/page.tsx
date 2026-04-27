@@ -272,20 +272,21 @@ export default function LaporanPage() {
       {/* Tab Content: Harian / Keterlambatan */}
       {(activeTab === "harian" || activeTab === "keterlambatan") && (
         <div className={styles.tableCard}>
-          <table className={styles.table}>
-            <thead>
-              <tr>
-                <th>No</th>
-                <th>Pekerja</th>
-                <th>OPS ID</th>
-                <th>Vendor</th>
-                <th>Jam Keluar</th>
-                <th>Jam Masuk</th>
-                <th>Durasi</th>
-                {activeTab === "keterlambatan" && <th>Terlambat</th>}
-                <th>Status</th>
-              </tr>
-            </thead>
+          <div className={styles.tableWrap}>
+            <table className={styles.table}>
+              <thead>
+                <tr>
+                  <th>No</th>
+                  <th>Pekerja</th>
+                  <th>OPS ID</th>
+                  <th>Vendor</th>
+                  <th>Jam Keluar</th>
+                  <th>Jam Masuk</th>
+                  <th>Durasi</th>
+                  {activeTab === "keterlambatan" && <th>Terlambat</th>}
+                  <th>Status</th>
+                </tr>
+              </thead>
             <tbody>
               {filteredData.length === 0 ? (
                 <tr>
@@ -339,7 +340,8 @@ export default function LaporanPage() {
               )}
             </tbody>
           </table>
-          <div className={styles.summary}>
+        </div>
+        <div className={styles.summary}>
             <div className={styles.summaryItem}>
               Total:{" "}
               <span className={styles.summaryValue}>{totalRecords} record</span>
