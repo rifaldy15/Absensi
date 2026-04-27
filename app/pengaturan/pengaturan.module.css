@@ -329,6 +329,65 @@
   color: var(--accent);
 }
 
+/* Shift Management */
+.shiftList {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.shiftPill {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 12px;
+  background: rgba(59, 130, 246, 0.1);
+  border: 1px solid rgba(59, 130, 246, 0.2);
+  border-radius: var(--radius-full);
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--primary);
+}
+
+.removeShift {
+  background: none;
+  border: none;
+  color: var(--text-muted);
+  font-size: 1.1rem;
+  cursor: pointer;
+  line-height: 1;
+  padding: 0;
+  transition: color var(--transition-fast);
+}
+
+.removeShift:hover {
+  color: var(--danger);
+}
+
+.addShiftRow {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.addBtn {
+  padding: 8px 16px;
+  border-radius: var(--radius-md);
+  background: var(--bg-input);
+  border: 1px solid var(--border);
+  color: var(--text-secondary);
+  font-size: 0.8rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.addBtn:hover {
+  border-color: var(--primary);
+  color: var(--primary);
+}
+
 /* ===== Mobile Responsive ===== */
 @media (max-width: 768px) {
   .page {

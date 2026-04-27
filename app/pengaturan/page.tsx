@@ -1,18 +1,43 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import styles from "./pengaturan.module.css";
+import { Shift } from "@/lib/mock-data";
 
 export default function PengaturanPage() {
-  const [breakDuration, setBreakDuration] = useState("60");
+  const [loading, setLoading] = useState(true);
+  const [graceMinutes, setGraceMinutes] = useState(30);
+  const [activeShifts, setActiveShifts] = useState<string[]>([]);
+  const [newShift, setNewShift] = useState("");
+  
   const [companyName, setCompanyName] = useState("PT Industrial Corp");
   const [openSections, setOpenSections] = useState<Set<string>>(
-    new Set(["umum", "scanner", "users", "offline"]),
+    new Set(["umum", "shift", "scanner", "users", "offline"]),
   );
   const [autoAlert, setAutoAlert] = useState(true);
   const [soundEffect, setSoundEffect] = useState(true);
   const [offlineMode, setOfflineMode] = useState(false);
   const [toast, setToast] = useState("");
+
+  useEffect(() => {
+    fetchSettings();
+  }, []);
+
+  const fetchSettings = async () => {
+    try {
+      setLoading(true);
+      const res = await fetch("/api/settings");
+      const data = await res.json();
+      if (data && !data.error) {
+        setGraceMinutes(data.graceMinutes);
+        setActiveShifts(data.activeShifts.split(",").map((s: string) => s.trim()));
+      }
+    } catch (error) {
+      console.error("Failed to fetch settings", error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const toggleSection = (s: string) => {
     setOpenSections((prev) => {
@@ -23,10 +48,48 @@ export default function PengaturanPage() {
     });
   };
 
-  const handleSave = () => {
-    setToast("✅ Pengaturan berhasil disimpan!");
-    setTimeout(() => setToast(""), 3000);
+  const handleSave = async () => {
+    try {
+      const res = await fetch("/api/settings", {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          graceMinutes,
+          activeShifts: activeShifts.join(","),
+        }),
+      });
+      
+      if (res.ok) {
+        setToast("✅ Pengaturan berhasil disimpan!");
+        setTimeout(() => setToast(""), 3000);
+      } else {
+        throw new Error("Failed to save");
+      }
+    } catch (error) {
+      alert("Gagal menyimpan pengaturan.");
+    }
   };
+
+  const addShift = () => {
+    if (!newShift) return;
+    if (activeShifts.includes(newShift)) {
+      alert("Shift sudah ada!");
+      return;
+    }
+    // Simple HH:mm validation
+    if (!/^([01]\d|2[0-3]):([0-5]\d)$/.test(newShift)) {
+      alert("Format jam salah! Gunakan HH:mm (contoh: 08:00)");
+      return;
+    }
+    setActiveShifts([...activeShifts, newShift].sort());
+    setNewShift("");
+  };
+
+  const removeShift = (s: string) => {
+    setActiveShifts(activeShifts.filter((item) => item !== s));
+  };
+
+  if (loading) return <div style={{ padding: 40, color: "var(--text-muted)" }}>Memuat pengaturan...</div>;
 
   return (
     <div className={styles.page}>
@@ -51,22 +114,7 @@ export default function PengaturanPage() {
                 onChange={(e) => setCompanyName(e.target.value)}
               />
             </div>
-            <div className={styles.field}>
-              <label className={styles.label}>
-                Durasi Istirahat Default (Menit)
-              </label>
-              <p className={styles.description}>
-                Batas waktu istirahat sebelum pekerja dianggap terlambat
-              </p>
-              <input
-                className={styles.input}
-                type="number"
-                min="15"
-                max="120"
-                value={breakDuration}
-                onChange={(e) => setBreakDuration(e.target.value)}
-              />
-            </div>
+            
             <div className={styles.toggleRow}>
               <div className={styles.toggleInfo}>
                 <span className={styles.toggleLabel}>Auto-Alert Overdue</span>
@@ -92,6 +140,66 @@ export default function PengaturanPage() {
                 onClick={() => setSoundEffect(!soundEffect)}>
                 <span className={styles.toggleDot} />
               </button>
+            </div>
+          </div>
+        )}
+      </div>
+
+      {/* Section: Shift & Toleransi */}
+      <div className={styles.section}>
+        <div
+          className={styles.sectionHeader}
+          onClick={() => toggleSection("shift")}>
+          <h3 className={styles.sectionTitle}>⏰ Shift & Toleransi</h3>
+          <span
+            className={`${styles.chevron} ${openSections.has("shift") ? styles.chevronOpen : ""}`}>
+            ▶
+          </span>
+        </div>
+        {openSections.has("shift") && (
+          <div className={styles.sectionBody}>
+             <div className={styles.field}>
+              <label className={styles.label}>
+                Toleransi Istirahat & Auto-Clear (Menit)
+              </label>
+              <p className={styles.description}>
+                Batas waktu (menit) setelah shift berakhir sebelum data pekerja otomatis dihapus dari database.
+              </p>
+              <input
+                className={styles.input}
+                type="number"
+                min="0"
+                max="120"
+                value={graceMinutes}
+                onChange={(e) => setGraceMinutes(parseInt(e.target.value) || 0)}
+              />
+            </div>
+
+            <div className={styles.field}>
+              <label className={styles.label}>Daftar Shift Aktif Hari Ini</label>
+              <p className={styles.description}>
+                Jam mulai shift yang berlaku di sistem saat ini.
+              </p>
+              
+              <div className={styles.shiftList}>
+                {activeShifts.map((s) => (
+                  <div key={s} className={styles.shiftPill}>
+                    <span>{s}</span>
+                    <button onClick={() => removeShift(s)} className={styles.removeShift}>×</button>
+                  </div>
+                ))}
+              </div>
+
+              <div className={styles.addShiftRow}>
+                <input 
+                  type="time" 
+                  className={styles.input} 
+                  style={{ width: "120px" }}
+                  value={newShift}
+                  onChange={(e) => setNewShift(e.target.value)}
+                />
+                <button className={styles.addBtn} onClick={addShift}>+ Tambah Shift</button>
+              </div>
             </div>
           </div>
         )}
@@ -165,7 +273,7 @@ export default function PengaturanPage() {
                   <div className={styles.userRole}>admin_hr@company.com</div>
                 </div>
                 <span className={`${styles.roleBadge} ${styles.roleAdmin}`}>
-                  Admin
+                   Admin
                 </span>
               </div>
               <div className={styles.userItem}>
@@ -179,64 +287,6 @@ export default function PengaturanPage() {
                   Supervisor
                 </span>
               </div>
-              <div className={styles.userItem}>
-                <div className={styles.userAvatar}>M</div>
-                <div className={styles.userInfo}>
-                  <div className={styles.userName}>Manager Produksi</div>
-                  <div className={styles.userRole}>manager@company.com</div>
-                </div>
-                <span
-                  className={`${styles.roleBadge} ${styles.roleSupervisor}`}>
-                  Supervisor
-                </span>
-              </div>
-            </div>
-          </div>
-        )}
-      </div>
-
-      {/* Section: Offline Mode */}
-      <div className={styles.section}>
-        <div
-          className={styles.sectionHeader}
-          onClick={() => toggleSection("offline")}>
-          <h3 className={styles.sectionTitle}>📡 Offline Mode</h3>
-          <span
-            className={`${styles.chevron} ${openSections.has("offline") ? styles.chevronOpen : ""}`}>
-            ▶
-          </span>
-        </div>
-        {openSections.has("offline") && (
-          <div className={styles.sectionBody}>
-            <div className={styles.statusRow}>
-              <span
-                className={`${styles.statusDot} ${styles.statusDotGreen}`}
-              />
-              <span className={styles.statusText}>
-                Koneksi online — data tersinkronisasi
-              </span>
-              <span className={styles.statusMeta}>
-                Terakhir sync: 2 menit lalu
-              </span>
-            </div>
-            <div className={styles.toggleRow}>
-              <div className={styles.toggleInfo}>
-                <span className={styles.toggleLabel}>Mode Offline</span>
-                <span className={styles.toggleDesc}>
-                  Simpan data secara lokal saat koneksi terputus
-                </span>
-              </div>
-              <button
-                className={`${styles.toggle} ${offlineMode ? styles.active : ""}`}
-                onClick={() => setOfflineMode(!offlineMode)}>
-                <span className={styles.toggleDot} />
-              </button>
-            </div>
-            <div className={styles.statusRow}>
-              <span
-                className={`${styles.statusDot} ${styles.statusDotYellow}`}
-              />
-              <span className={styles.statusText}>0 data pending sync</span>
             </div>
           </div>
         )}
@@ -254,3 +304,4 @@ export default function PengaturanPage() {
     </div>
   );
 }
+

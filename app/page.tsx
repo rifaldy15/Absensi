@@ -62,12 +62,24 @@ export default function DashboardPage() {
   const [activeBreaks, setActiveBreaks] = useState<any[]>([]);
   const [recentLogs, setRecentLogs] = useState<any[]>([]);
   const [vendorStats, setVendorStats] = useState<any[]>([]);
+  const [dynamicShifts, setDynamicShifts] = useState<string[]>([]);
+  const [graceMinutes, setGraceMinutes] = useState(30);
   const [loading, setLoading] = useState(true);
 
   const fetchDashboardData = async () => {
     try {
-      const res = await fetch("/api/dashboard");
-      const data = await res.json();
+      const [dashRes, setRes] = await Promise.all([
+        fetch("/api/dashboard"),
+        fetch("/api/settings")
+      ]);
+      const data = await dashRes.json();
+      const sData = await setRes.json();
+
+      if (sData && !sData.error) {
+        setGraceMinutes(sData.graceMinutes);
+        setDynamicShifts(sData.activeShifts.split(",").map((s: string) => s.trim()));
+      }
+
       if (data) {
         // Map active breaks to match LiveTable structure
         const mappedBreaks =
@@ -126,7 +138,7 @@ export default function DashboardPage() {
     };
   }, []);
 
-  const activeShifts = getActiveShifts();
+  const activeShifts = dynamicShifts.filter((s) => isShiftActive(s as Shift));
 
   // Filter workers based on shift
   const visibleWorkers = useMemo(() => {
@@ -203,9 +215,9 @@ export default function DashboardPage() {
           onClick={() => setShiftFilter("all")}>
           Semua
         </button>
-        {SHIFTS.map((s) => {
+        {dynamicShifts.map((s) => {
           const isActive = activeShifts.includes(s);
-          const isExpired = isShiftExpired(s);
+          const isExpired = isShiftExpired(s as Shift, graceMinutes);
           return (
             <button
               key={s}

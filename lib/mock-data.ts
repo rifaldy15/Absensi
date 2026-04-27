@@ -41,15 +41,13 @@ export function getActiveShifts(): Shift[] {
   return SHIFTS.filter((s) => isShiftActive(s));
 }
 
-// Check if shift has EXPIRED (30 min after shift end = auto-clear)
-const GRACE_MINUTES = 30;
-
-export function isShiftExpired(shift: Shift): boolean {
+// Check if shift has EXPIRED (grace minutes after shift end = auto-clear)
+export function isShiftExpired(shift: Shift, graceMinutes: number = 30): boolean {
   const now = new Date();
   const currentMinutes = now.getHours() * 60 + now.getMinutes();
   const startHour = parseInt(shift.split(":")[0]);
   const endMinutes = ((startHour + 9) * 60) % (24 * 60); // shift end time in minutes
-  const expireMinutes = (endMinutes + GRACE_MINUTES) % (24 * 60); // +30 min grace
+  const expireMinutes = (endMinutes + graceMinutes) % (24 * 60); // +grace min
 
   // Handle midnight crossing
   if (startHour + 9 >= 24) {
@@ -59,7 +57,6 @@ export function isShiftExpired(shift: Shift): boolean {
   }
   // Normal shift (no midnight crossing)
   // Shift (e.g. 08:00) ends 17:00, expires 17:30.
-  // It is expired ONLY from 17:30 until 23:59. At 00:00, it becomes the upcoming shift for the new day.
   return currentMinutes >= expireMinutes;
 }
 

@@ -1,21 +1,21 @@
 import prisma from "./prisma";
 import { isShiftExpired, Shift } from "./mock-data";
+import { getSystemSettings } from "./settings";
 
 /**
  * Automatically detects and deletes workers whose shifts have expired
- * by more than 30 minutes, according to the isShiftExpired logic.
- *
- * Because schema.prisma defines onDelete: Cascade, deleting the worker
- * will also delete their ScanLogs and ActiveBreaks.
+ * according to the dynamic graceMinutes setting.
  */
 export async function autoCleanupExpiredWorkers() {
   try {
+    const settings = await getSystemSettings();
+    
     const workers = await prisma.worker.findMany({
       select: { id: true, shift: true },
     });
 
     const expiredIds = workers
-      .filter((w) => isShiftExpired(w.shift as Shift))
+      .filter((w) => isShiftExpired(w.shift as Shift, settings.graceMinutes))
       .map((w) => w.id);
 
     if (expiredIds.length > 0) {

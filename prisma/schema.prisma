@@ -45,3 +45,11 @@ model ActiveBreak {
   workerId     String   @unique
   worker       Worker   @relation(fields: [workerId], references: [id], onDelete: Cascade)
 }
+
+model Setting {
+  id            String   @id @default("global")
+  graceMinutes  Int      @default(30)
+  activeShifts  String   @default("08:00,09:00,15:00,19:00,23:00,00:00")
+  updatedAt     DateTime @updatedAt
+}
+

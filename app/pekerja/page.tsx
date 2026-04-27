@@ -30,6 +30,7 @@ const PER_PAGE = 10;
 export default function DataPekerjaPage() {
   const [workers, setWorkers] = useState<Worker[]>([]);
   const [vendors, setVendors] = useState<Vendor[]>([]);
+  const [dynamicShifts, setDynamicShifts] = useState<string[]>([]);
   const [loading, setLoading] = useState(true);
 
   const [search, setSearch] = useState("");
@@ -44,7 +45,7 @@ export default function DataPekerjaPage() {
     name: "",
     ops: "",
     vendorId: "",
-    shift: SHIFTS[0] as Shift,
+    shift: "" as Shift,
   });
   const [toast, setToast] = useState("");
 
@@ -62,14 +63,19 @@ export default function DataPekerjaPage() {
   const fetchData = async () => {
     try {
       setLoading(true);
-      const [wRes, vRes] = await Promise.all([
+      const [wRes, vRes, sRes] = await Promise.all([
         fetch("/api/workers"),
         fetch("/api/vendors"),
+        fetch("/api/settings"),
       ]);
       const wData = await wRes.json();
       const vData = await vRes.json();
+      const sData = await sRes.json();
 
       setVendors(vData);
+      
+      const shiftsArr = sData.activeShifts ? sData.activeShifts.split(",").map((s: string) => s.trim()) : [];
+      setDynamicShifts(shiftsArr);
 
       const mappedWorkers = wData.map((w: any) => ({
         id: w.id,
@@ -82,7 +88,11 @@ export default function DataPekerjaPage() {
       setWorkers(mappedWorkers);
 
       if (vData.length > 0) {
-        setFormData((prev) => ({ ...prev, vendorId: vData[0].id }));
+        setFormData((prev) => ({ 
+          ...prev, 
+          vendorId: vData[0].id,
+          shift: shiftsArr.length > 0 ? shiftsArr[0] as Shift : "" as Shift
+        }));
       }
     } catch (err) {
       console.error(err);
@@ -112,7 +122,7 @@ export default function DataPekerjaPage() {
       name: "",
       ops: "",
       vendorId: vendors.length > 0 ? vendors[0].id : "",
-      shift: SHIFTS[0] as Shift,
+      shift: dynamicShifts.length > 0 ? dynamicShifts[0] as Shift : "" as Shift,
     });
     setEditingWorker(null);
     setModalMode("add");
@@ -347,7 +357,7 @@ export default function DataPekerjaPage() {
             setPage(1);
           }}>
           <option value="">Semua Shift</option>
-          {SHIFTS.map((s) => (
+          {dynamicShifts.map((s) => (
             <option key={s} value={s}>
               Shift {s}
             </option>
@@ -618,7 +628,7 @@ export default function DataPekerjaPage() {
                 onChange={(e) =>
                   setFormData({ ...formData, shift: e.target.value as Shift })
                 }>
-                {SHIFTS.map((s) => (
+                {dynamicShifts.map((s) => (
                   <option key={s} value={s}>
                     Shift {s} - {getShiftEndTime(s as Shift)}
                   </option>
