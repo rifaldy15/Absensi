@@ -41,6 +41,8 @@ export default function ScanStationPage() {
   const [showManualInput, setShowManualInput] = useState(false);
   const [manualQuery, setManualQuery] = useState("");
   const [manualError, setManualError] = useState("");
+  const [showWarning, setShowWarning] = useState(false);
+  const [warningMessage, setWarningMessage] = useState("");
   const [loading, setLoading] = useState(false);
 
   const autoCloseRef = useRef<NodeJS.Timeout | null>(null);
@@ -114,6 +116,7 @@ export default function ScanStationPage() {
         if (autoCloseRef.current) clearInterval(autoCloseRef.current);
         setState("idle");
         setScannedWorker(null);
+        setShowWarning(false);
         setAutoCloseProgress(100);
         // Refocus hidden input immediately
         if (!showManualInput) inputRef.current?.focus();
@@ -164,7 +167,13 @@ export default function ScanStationPage() {
       const data = await res.json();
 
       if (!res.ok) {
-        setManualError(data.error || "Pekerja tidak ditemukan");
+        if (data.error === "already_had_break") {
+          setWarningMessage(data.message);
+          setShowWarning(true);
+          startAutoClose(); // Also use auto-close for warning
+        } else {
+          setManualError(data.error || "Pekerja tidak ditemukan");
+        }
         setLoading(false);
         return;
       }
@@ -403,11 +412,44 @@ export default function ScanStationPage() {
             {overdueMinutes > 0 && (
               <div className={styles.overdueMsg}>
                 Terlambat {overdueMinutes} menit
-              </div>
+                {showWarning && (
+          <div className={styles.warningState}>
+            <span className={styles.warningIcon}>⚠️</span>
+            <h2 className={styles.warningTitle}>Akses Ditolak</h2>
+            <div className={styles.warningBox}>
+              {warningMessage}
+            </div>
+            <p className={styles.warningHint}>
+              Setiap pekerja hanya diperbolehkan istirahat 1 kali per shift.
+            </p>
+            <div
+              className={styles.autoCloseBar}
+              style={{ width: `${autoCloseProgress}%`, background: "var(--danger)" }}
+            />
+          </div>
+        )}
+      </div>
             )}
             <div
               className={styles.autoCloseBar}
               style={{ width: `${autoCloseProgress}%` }}
+            />
+          </div>
+        )}
+
+        {showWarning && (
+          <div className={styles.warningState}>
+            <span className={styles.warningIcon}>⚠️</span>
+            <h2 className={styles.warningTitle}>Akses Ditolak</h2>
+            <div className={styles.warningBox}>
+              {warningMessage}
+            </div>
+            <p className={styles.warningHint}>
+              Setiap pekerja hanya diperbolehkan istirahat 1 kali per shift.
+            </p>
+            <div
+              className={styles.autoCloseBar}
+              style={{ width: `${autoCloseProgress}%`, background: "var(--danger)" }}
             />
           </div>
         )}

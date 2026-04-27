@@ -85,8 +85,26 @@ export async function POST(request: Request) {
       });
     } else {
       // CHECK-OUT Logic (Going on break)
+      
+      // 1. Check if worker has already had a break (any 'check-in' log for this worker)
+      const existingCheckIn = await prisma.scanLog.findFirst({
+        where: {
+          workerId: worker.id,
+          type: "check-in",
+        },
+      });
 
-      // 1. Add to active breaks
+      if (existingCheckIn) {
+        return NextResponse.json(
+          { 
+            error: "already_had_break", 
+            message: `Pekerja ${worker.name} sudah mengambil istirahat sebelumnya hari ini.` 
+          }, 
+          { status: 400 }
+        );
+      }
+
+      // 2. Add to active breaks
       const newBreak = await prisma.activeBreak.create({
         data: {
           workerId: worker.id,
