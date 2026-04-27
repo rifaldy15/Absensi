@@ -63,6 +63,7 @@ export default function DashboardPage() {
   const [vendorStats, setVendorStats] = useState<any[]>([]);
   const [dynamicShifts, setDynamicShifts] = useState<string[]>([]);
   const [graceMinutes, setGraceMinutes] = useState(30);
+  const [breakMinutes, setBreakMinutes] = useState(60);
   const [loading, setLoading] = useState(true);
 
   const fetchDashboardData = async () => {
@@ -76,6 +77,7 @@ export default function DashboardPage() {
 
       if (sData && !sData.error) {
         setGraceMinutes(sData.graceMinutes);
+        setBreakMinutes(sData.breakMinutes || 60);
         setDynamicShifts(sData.activeShifts.split(",").map((s: string) => s.trim()));
       }
 
