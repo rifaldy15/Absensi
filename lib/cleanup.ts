@@ -11,11 +11,18 @@ export async function autoCleanupExpiredWorkers() {
     const settings = await getSystemSettings();
     
     const workers = await prisma.worker.findMany({
-      select: { id: true, shift: true },
+      select: { id: true, shift: true, createdAt: true },
     });
 
+    const now = new Date();
     const expiredIds = workers
-      .filter((w) => isShiftExpired(w.shift as Shift, settings.graceMinutes))
+      .filter((w) => {
+        // Jangan hapus jika baru dibuat dalam 24 jam terakhir
+        const hoursSinceCreation = (now.getTime() - w.createdAt.getTime()) / (1000 * 60 * 60);
+        if (hoursSinceCreation < 24) return false;
+        
+        return isShiftExpired(w.shift as Shift, settings.graceMinutes);
+      })
       .map((w) => w.id);
 
     if (expiredIds.length > 0) {
